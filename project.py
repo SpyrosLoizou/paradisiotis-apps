@@ -10,7 +10,7 @@ import pandas as pd
 import plotly.express as px
 import os
 
-st.sidebar.image('/Data/paralogo.png', use_column_width=True)
+st.sidebar.image("/Data/paralogo.png", use_column_width=True)
 
 
 #Hide streamlit settings
