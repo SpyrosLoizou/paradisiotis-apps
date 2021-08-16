@@ -248,8 +248,7 @@ elif select == 'Recent Products ordered by customer' :
             ).to_csv('period.csv')
         os.remove('per.csv')
         df3 = pd.read_csv('period.csv')
-        table_style = {'width': '100%', 'border': '1px solid black'}
-        st.table(df3[['MaterialNumber','MaterialDescription','Period/Date','Quantity']],style = table_style)
+        st.table(df3[['MaterialNumber','MaterialDescription','Period/Date','Quantity']])
        
         
         
