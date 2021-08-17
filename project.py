@@ -44,7 +44,7 @@ if select == 'Top 5 selling products overall' :
     st.markdown("<h3 style='text-align: center; color: black;'>Top 5 selling products overall</h1>", unsafe_allow_html=True)
     #st.subheader("Top 5 selling products overall")
     fig = px.pie(df2, values=df2['NetValue'][:5], names=df2['MaterialDescription'][:5])
-    st.plotly_chart(fig,align='center')
+    st.plotly_chart(fig)
     
 #Top 5 products per district
 elif select == 'Top 5 products per district' :
