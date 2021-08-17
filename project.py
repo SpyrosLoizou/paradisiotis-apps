@@ -10,7 +10,8 @@ import pandas as pd
 import plotly.express as px
 import os
 
-st.sidebar.image("Data/paralogo.png", use_column_width=True)
+st.sidebar.image("/Users/sloizou/Desktop/Project/Data/paralogo.png", use_column_width=True)
+
 
 #Hide streamlit settings
 st.markdown(""" <style>
@@ -248,7 +249,6 @@ elif select == 'Recent Products ordered by customer' :
         os.remove('per.csv')
         df3 = pd.read_csv('period.csv')
         st.table(df3[['MaterialNumber','MaterialDescription','Period/Date','Quantity']])
-       
         
         
 #Sales Per Supervisor per month        
@@ -258,16 +258,15 @@ elif select == 'Sales Per Supervisor per month' :
         supervisor = df['SupervisorName'].unique()
         option_sup = st.selectbox('Select a Supervisor',supervisor)
         
-        df[df['SupervisorName'] == option_sup].groupby('MaterialNumber').agg({'Period/Date':'max', 'NetValue':'sum'}).to_csv('sup_month.csv')
+        df[df['SupervisorName'] == option_sup].groupby(['MaterialNumber', 'Period/Date']).agg({'NetValue':'sum'}).to_csv('sup_month.csv')
         df3 = pd.read_csv('sup_month.csv')
         
         df3['month'] = pd.DatetimeIndex(df3['Period/Date']).month
-      
         
-        df3.groupby('month').agg({'NetValue':'sum'}).to_csv('month_final.csv')
+        df3.groupby('month').agg({'NetValue':'sum'}).to_csv('super_month.csv')
         os.remove('sup_month.csv')
         
-        df3 = pd.read_csv('month_final.csv')
+        df3 = pd.read_csv('super_month.csv')
         
         fig = px.bar(df3, x=df3['month'], y=df3['NetValue'])
         st.plotly_chart(fig)
@@ -279,7 +278,7 @@ elif select == 'Sales Per Customer monthly' :
         custom = df['Name'].unique()
         option_cus = st.selectbox('Select a Customer',custom)
         
-        df[df['Name'] == option_cus].groupby('MaterialNumber').agg({'Period/Date':'max', 'NetValue':'sum'}).to_csv('cus_month.csv')
+        df[df['Name'] == option_cus].groupby(['MaterialNumber', 'Period/Date']).agg({'NetValue':'sum'}).to_csv('cus_month.csv')
         df3 = pd.read_csv('cus_month.csv')
         
         df3['month'] = pd.DatetimeIndex(df3['Period/Date']).month
