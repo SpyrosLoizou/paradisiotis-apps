@@ -10,7 +10,7 @@ import pandas as pd
 import plotly.express as px
 import os
 
-st.sidebar.image("Data/paralogo.png", use_column_width=True)
+st.sidebar.image("/Users/sloizou/Desktop/Project/Data/paralogo.png", use_column_width=True)
 
 
 #Hide streamlit settings
@@ -180,6 +180,8 @@ elif select == 'Top 5 products per Price Group' :
         df[df['PriceGroup'] == option_gr].groupby('MaterialNumber').agg({'Quantity':'sum','MaterialDescription':'min'}).to_csv('pri_gr.csv')
      
         df3 = pd.read_csv('pri_gr.csv')
+        
+        
     
         df3.sort_values(
                      by="Quantity",
@@ -191,6 +193,36 @@ elif select == 'Top 5 products per Price Group' :
              
         fig = px.bar(df3, x=df3['MaterialDescription'][:5], y=df3['Quantity'][:5])
         st.plotly_chart(fig)  
+        
+        st.subheader("")
+        
+        st.markdown("<h3 style='text-align: center; color: black;'>Lead of opportunity</h1>", unsafe_allow_html=True)
+        
+        df[df['PriceGroup'] == option_gr].groupby(['Payee','MaterialNumber']).agg({'Name':'min','MaterialDescription':'min'}).to_csv('file1.csv')
+            
+        df4 = pd.read_csv('file1.csv')
+        
+        material = df3['MaterialDescription'][:5]
+        material.to_csv('material.csv')
+        
+        df4 = df4[df4['MaterialDescription'].isin(material)]
+      
+        os.remove('file1.csv')
+        
+        name = df4['Name'].unique()
+        option_name = st.selectbox('Select a customer', name)
+        
+        df4[df4['Name'] == option_name].groupby(['Payee','MaterialNumber']).agg({'MaterialDescription':'min'}).to_csv('file5.csv')
+        
+        df4 = pd.read_csv('file5.csv')
+        
+        top = df4['MaterialDescription']
+        df5 = pd.read_csv('material.csv')
+        df5 = df5[~df5['MaterialDescription'].isin(top)]
+        df5.index = df5.index+1
+        st.table(df5['MaterialDescription'])
+    
+        
      elif select_type == 'NetValue':
         st.markdown("<h3 style='text-align: center; color: black;'>Top 5 products per Price Group by Net Value</h1>", unsafe_allow_html=True)
         #st.subheader("Top 5 products per Price Group by Net Value")
@@ -209,9 +241,11 @@ elif select == 'Top 5 products per Price Group' :
         os.remove('pri_gr.csv')   
     
         df3 = pd.read_csv('price_group.csv')
-             
+        
         fig = px.bar(df3, x=df3['MaterialDescription'][:5], y=df3['NetValue'][:5])
         st.plotly_chart(fig)  
+        
+        
         
         
 #Recent Products ordered by customer        
@@ -248,6 +282,7 @@ elif select == 'Recent Products ordered by customer' :
             ).to_csv('period.csv')
         os.remove('per.csv')
         df3 = pd.read_csv('period.csv')
+        df3.index = df3.index+1
         st.table(df3[['MaterialNumber','MaterialDescription','Period/Date','Quantity']])
         
         
