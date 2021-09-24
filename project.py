@@ -9,7 +9,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import os
-import streamlit.components.v1 as components
 
 st.sidebar.image("Data/paralogo.png", use_column_width=True)
 
@@ -326,13 +325,5 @@ elif select == 'Sales Per Customer monthly' :
         df3 = pd.read_csv('customer_final.csv')
         
         fig = px.bar(df3, x=df3['month'], y=df3['NetValue'])
-        st.plotly_chart(fig)
+        st.plotly_chart(fig) 
 
-        components.iframe("https://bi.paradisiotis.com/superset/welcome/",width= 800, height=800)
-       
-
-      
-
-  
-        
-        
